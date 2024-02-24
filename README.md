@@ -1,73 +1,32 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# LangChain Expamples with NestJS
+This repository contains multiple example use cases implemented with 
+[NestJS](https://docs.nestjs.com/) and [LangChain (TypeScript)](https://js.langchain.com/docs/get_started/introduction)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Running the Application locally
+1. Provide the env variable `OPENAI_API_KEY` (e.g. by creating a file called `.env` in the root of this project)
+2. Run `npm i`
+3. Run `npm run start:dev`
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This will start the NestJS application running on [http://localhost:3000](http://localhost:3000)
 
-## Description
+You can find example requests [here](http/requests.http).
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Examples
+### 1. Execute a simple prompt
+[SimpleOpenAIChatService.chat(prompt)](src/openai/simple-chat/simple-openai-chat.service.ts)  
+API Path: `/chat?prompt={USER_PROMPT}`
 
-## Installation
+This example takes the prompt as it is and sends it to OpenAI's Chat Completion API and returns the result.
 
-```bash
-$ npm install
-```
+### 2. Format incorrectly formatted addresses
+[SimpleOpenAIChatService.chatWithTemplate(address)](src/openai/simple-chat/simple-openai-chat.service.ts)  
+API Path: `/format-address?address={INPUT_ADDRESS}`
 
-## Running the app
+This example takes any address where the parts might be in any order and return the same address formatted like: `streetName houseNumber, zipCode city`.
 
-```bash
-# development
-$ npm run start
+### 3. Format incorrectly formatted addresses and retrieve the zip code if it is missing
+[OpenAIChatWithToolsService.chatWithTools(address)](src/openai/chat-with-tools/openai-chat-with-tools.service.ts)  
+API Path: `/format-address-with-tools?address={INPUT_ADDRESS}`
 
-# watch mode
-$ npm run start:dev
+Similar to example #2 with the difference that a tool is provided to fetch a zip code if it is missing in the input address. This is a basic implementation of an AI-Agent with Tool/Function calling. 
 
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

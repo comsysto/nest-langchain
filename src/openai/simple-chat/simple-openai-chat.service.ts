@@ -14,8 +14,8 @@ export class SimpleOpenAIChatService {
   private stringOutputParser = new StringOutputParser();
   private templatePrompt = ChatPromptTemplate.fromMessages([
     [
-      "system",
-      `The following text includes a possibly malformed address. It should include a streetAddress, houseNumber, city and a zipCode.
+      "user",
+      `The following text contains a possibly incorrectly formatted address. It should include a streetAddress, houseNumber, city and a zipCode.
       Return the address in the format: streetAddress houseNumber, zipCode city.
 
       Example: Riesstraße 22, 80992 München

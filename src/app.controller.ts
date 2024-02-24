@@ -14,7 +14,7 @@ export class AppController {
     return "Hello World!";
   }
 
-  @Get("hello")
+  @Get("chat")
   hello(@Query("prompt") prompt: string): Promise<string> {
     return this.simpleOpenAIChatService.chat(prompt);
   }

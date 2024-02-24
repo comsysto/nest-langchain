@@ -1,4 +1,4 @@
-GET http://localhost:3000/hello?prompt=how are you?
+GET http://localhost:3000/chat?prompt=how are you?
 
 ###
 
