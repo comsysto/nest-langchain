@@ -27,7 +27,7 @@ export class OpenAIChatWithToolsService {
   private prompt = ChatPromptTemplate.fromMessages([
     [
       "system",
-      `The provider text from the user contains a possibly incorrectly formatted address. It should include a streetAddress, houseNumber, city and a zipCode.
+      `The by the user provided text contains a possibly incorrectly formatted address. It should include a streetAddress, houseNumber, city and a zipCode.
       Return the address in the format: streetAddress houseNumber, zipCode city.
       
       If the zipCode is missing, retrieve it and add it to the result. 
