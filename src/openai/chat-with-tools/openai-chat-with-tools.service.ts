@@ -1,11 +1,9 @@
-import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts";
 import { DynamicStructuredTool } from "@langchain/core/tools";
-import { createOpenAIFunctionsAgent, AgentExecutor } from "langchain/agents";
 import { ChatOpenAI } from "@langchain/openai";
-import { pull } from "langchain/hub";
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
-import { firstValueFrom } from "rxjs";
+import { AgentExecutor, createOpenAIFunctionsAgent } from "langchain/agents";
 import { z } from "zod";
 
 @Injectable()
@@ -15,8 +13,21 @@ export class OpenAIChatWithToolsService {
     private readonly httpService: HttpService,
   ) {}
 
-  private userPrompt(inputAddress: string) {
-    return `The provided text in INPUT includes a possibly malformed address. It should include a streetAddress, houseNumber, city and a zipCode.
+  async chatWithTools(address: string): Promise<string> {
+    const agent = await createOpenAIFunctionsAgent({
+      llm: this.openAI,
+      tools: [this.zipCodeTool],
+      prompt: this.prompt,
+    });
+    const agentExecutor = new AgentExecutor({ agent, tools: [this.zipCodeTool], verbose: true });
+
+    return (await agentExecutor.invoke({ inputAddress: address })).output as string;
+  }
+
+  private prompt = ChatPromptTemplate.fromMessages([
+    [
+      "system",
+      `The provider text from the user includes a possibly malformed address. It should include a streetAddress, houseNumber, city and a zipCode.
       Return the address in the format: streetAddress houseNumber, zipCode city.
       
       If the zipCode is missing, retrieve it and add it to the result. 
@@ -27,11 +38,12 @@ export class OpenAIChatWithToolsService {
       EXAMPLES:
       - "Riesstraße 22 München" -> "Riesstraße 22, 80992 München"
       - "Oder Strasse 22 81669 München" -> "Oder Strasse 22, 81669 München"
-
-      INPUT:
-      ${inputAddress}
-    `;
-  }
+      `,
+    ],
+    ["user", "{inputAddress}"],
+    // this placeholder is needed for the agent to store intermediate information over multiple requests to OpneAI
+    new MessagesPlaceholder("agent_scratchpad"),
+  ]);
 
   private zipCodeTool = new DynamicStructuredTool({
     name: "get-zip-code",
@@ -53,21 +65,7 @@ export class OpenAIChatWithToolsService {
         `https://openplzapi.org/de/Streets?name=${streetName}&locality=${city}`,
       );
 
-      return response.data.find((entry) => entry.name === streetName)?.postalCode ?? "NO ZIP CODE FOUND";
+      return response.data.find((entry) => entry.name === streetName)?.postalCode;
     },
   });
-
-  async chatWithTools(address: string): Promise<string> {
-    // https://smith.langchain.com/hub/hwchase17/openai-functions-agent
-    const prompt = await pull<ChatPromptTemplate>("hwchase17/openai-functions-agent");
-
-    const agent = await createOpenAIFunctionsAgent({
-      llm: this.openAI,
-      tools: [this.zipCodeTool],
-      prompt: prompt,
-    });
-    const agentExecutor = new AgentExecutor({ agent, tools: [this.zipCodeTool], verbose: true });
-
-    return (await agentExecutor.invoke({ input: this.userPrompt(address) })).output as string;
-  }
 }
