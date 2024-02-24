@@ -9,6 +9,11 @@ export class AppController {
     private readonly openAIChatWithToolsService: OpenAIChatWithToolsService,
   ) {}
 
+  @Get()
+  helloWorld(): string {
+    return "Hello World!";
+  }
+
   @Get("hello")
   hello(@Query("prompt") prompt: string): Promise<string> {
     return this.simpleOpenAIChatService.chat(prompt);
