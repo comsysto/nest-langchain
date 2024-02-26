@@ -56,7 +56,7 @@ export class OpenAIChatWithToolsService {
 
         examples:
         - "Riesstraße" -> "Riesstr."
-        - "Oder Starsse" -> "Oder Str."
+        - "Oder Strasse" -> "Oder Str."
         - "Nelkenweg" -> "Nelkenweg"
       `),
     }),
