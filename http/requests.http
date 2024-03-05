@@ -10,6 +10,6 @@ GET http://localhost:3000/format-address-with-tools?address=München Riesstraße
 
 ###
 
-GET http://localhost:3000/charging-station-query?query=Find a charging station near munich
+GET http://localhost:3000/charging-station-query?query=Find a charging station near munich where i can eat something
 
 ###
