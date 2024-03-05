@@ -1,4 +1,4 @@
-# LangChain Expamples with NestJS
+# LangChain Examples with NestJS
 
 This repository contains multiple example use cases implemented with
 [NestJS](https://docs.nestjs.com/) and [LangChain (TypeScript)](https://js.langchain.com/docs/get_started/introduction)
