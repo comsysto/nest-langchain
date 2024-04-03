@@ -2,7 +2,7 @@ GET http://localhost:3000/chat?prompt=how are you?
 
 ###
 
-GET http://localhost:3000/format-address?address=München Riesstraße 22
+GET http://localhost:3000/format-address?address=Tower A, 17th floor, Ul. Roberta Frangeša Mihanovića 9, 10110, Zagreb, Kroatien
 
 ###
 
@@ -10,6 +10,6 @@ GET http://localhost:3000/format-address-with-tools?address=München Riesstraße
 
 ###
 
-GET http://localhost:3000/charging-station-query?query=Find a charging station near munich where i can eat something
+GET http://localhost:3000/charging-station-query?query=Find a charging station in Munich where I can have a meal while my car charges.
 
 ###

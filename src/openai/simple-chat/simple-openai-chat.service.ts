@@ -1,5 +1,5 @@
 import { StringOutputParser } from "@langchain/core/output_parsers";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { HandlebarsPromptTemplate } from "langchain/experimental/prompts/handlebars";
 import { ChatOpenAI } from "@langchain/openai";
 import { Injectable } from "@nestjs/common";
 
@@ -12,21 +12,34 @@ export class SimpleOpenAIChatService {
   }
 
   private stringOutputParser = new StringOutputParser();
-  private templatePrompt = ChatPromptTemplate.fromMessages([
-    [
-      "user",
-      `The following text contains a possibly incorrectly formatted address. It should include a streetAddress, houseNumber, city and a zipCode.
-      Return the address in the format: streetAddress houseNumber, zipCode city.
+  private templatePrompt = HandlebarsPromptTemplate.fromTemplate(
+    `After INPUT you will receive a possibly incorrectly formatted address. 
+      It should include a street, houseNumber, city and a zipCode.
+      Return the address as json in the format:
 
-      Example: Riesstraße 22, 80992 München
+      {
+        "street": string,
+        "houseNumber": string, 
+        "zipCode: string,
+        "city": string
+      }
+
+      Example: 
+
+      {
+        "street": "Riesstraße",
+        "houseNumber": "22", 
+        "zipCode: "80992",
+        "city": "München"
+      }
   
-      If any field is missing, omit it in the response.
+      If any field is missing, set the value to null.
 
-      Return only the formatted address no addtional explanation or text.
+      Return only the json no addtional explanation, text or formatting.
 
-      {inputAddress}`,
-    ],
-  ]);
+      INPUT
+      {{inputAddress}}`,
+  );
 
   async chatWithTemplate(address: string): Promise<string> {
     const llmChain = this.templatePrompt.pipe(this.openAI).pipe(this.stringOutputParser);
