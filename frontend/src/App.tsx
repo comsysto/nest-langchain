@@ -1,7 +1,7 @@
 import './App.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import { BrowserRouter, Routes, Route,  } from "react-router-dom";
-import { Home, RouteType } from './pages';
+import { RouteType } from './pages';
 import { Navbar } from './components';
 import { routes } from './pages'
 

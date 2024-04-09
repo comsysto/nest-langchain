@@ -1,6 +1,6 @@
 import { Button, Code, Divider, Heading, SkeletonText, Stack, Text, Textarea, useToast } from "@chakra-ui/react";
 import {ChatIcon} from '@chakra-ui/icons'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../api/apiService";
 
 import { CodeHighlight } from "../components";
@@ -20,6 +20,12 @@ export function PromptingTemplate({apiPath, heading, description, textAreaPlaceh
     const [response, setResponse] = useState('')
     const [fetching, setFetching] = useState(false)
     const [prompt, setPrompt] = useState('')
+
+    useEffect(() => {
+        setResponse('')
+        setFetching(false)
+        setPrompt('')
+    }, [k])
 
     const toast = useToast()
 
@@ -54,7 +60,7 @@ export function PromptingTemplate({apiPath, heading, description, textAreaPlaceh
         </Stack>
 
         <Stack direction={'row'} justifyContent={"center"} padding={5}>
-            <Stack padding={1} width={'40%'} minWidth={'200px'} maxWidth={'1200px'} >
+            <Stack padding={1} width={'40%'} minWidth={'200px'}  >
                 <Textarea minHeight='120px' placeholder={textAreaPlaceholder} size="lg" resize={'none'} onChange={handleChange} />
                 <Stack justifyContent={'flex-end'} direction={'row'}>
                     <Button width={'100%'} onClick={handleFetch} rightIcon={<ChatIcon />} colorScheme="teal">Send</Button>
@@ -63,7 +69,7 @@ export function PromptingTemplate({apiPath, heading, description, textAreaPlaceh
             <Stack>
                 <Divider orientation="vertical" />
             </Stack>
-            <Stack width={'40%'} minWidth={'200px'} maxWidth={'1200px'}>
+            <Stack width={'40%'} minWidth={'200px'}>
                 {
                     fetching ? (
                         <Code padding={3}>
@@ -71,7 +77,7 @@ export function PromptingTemplate({apiPath, heading, description, textAreaPlaceh
                         </Code>
                     ) : (
                         response ? (
-                            <CodeHighlight text={response} padding={3} whiteSpace={'pre-wrap'} textAlign={'left'} />
+                            <CodeHighlight key={`code-${k}`} text={response} padding={3} whiteSpace={'pre-wrap'} textAlign={'left'} />
                         ) : (
                             <></>
                         )

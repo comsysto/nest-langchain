@@ -6,7 +6,7 @@ import { RouteType, routes } from "../pages";
 export function Navbar(){
 
     return <>
-        <Flex justifyContent='space-evenly'  width='100vw'>
+        <Flex justifyContent='space-around'  width='100%'>
             {
                 ...Object.values(routes).map((route : RouteType, index : number) =>
                     <Link to={route.path} key={index}>
@@ -15,22 +15,11 @@ export function Navbar(){
                         </Button>
                     </Link>
                 )
-            }
-            {/* <Box>
-                b1
-            </Box>
-            <Button colorScheme='teal' variant='link'>
-                Button
-            </Button>
-            <Box>
-                b1
-            </Box>
-            <Box>
-                b1
-            </Box> */}
+            }        
+
         </Flex>
-        <Center height='30px'>
-            <Divider orientation='horizontal' />
+        <Center>
+            <Divider m={5} />
         </Center>
     </>
 }
