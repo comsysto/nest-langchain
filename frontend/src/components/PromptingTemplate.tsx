@@ -6,7 +6,6 @@ import { api } from "../api/apiService";
 import { CodeHighlight } from "../components";
 
 
-
 export type PromptingTemplateProps = {
     apiPath: (prompt: string) => string,
     heading: string,
