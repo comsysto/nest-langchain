@@ -33,7 +33,6 @@ export function PromptingTemplate({apiPath, heading, description, textAreaPlaceh
 
         setFetching(false)
         if(err){
-            // ...
             toast({
                 title: 'Failed to fetch',
                 description: "Check the console for more information",

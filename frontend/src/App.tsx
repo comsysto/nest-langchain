@@ -12,10 +12,10 @@ function App() {
 			<BrowserRouter>
 			<Navbar />
 				<Routes>
-						<Route path='/' element={<Home />}/>
+						<Route path='/' element={routes[0].component}/>
 
 						{
-							...Object.values(routes).map((route : RouteType) => 
+							...routes.map((route : RouteType) => 
 								<Route path={route.path} element={route.component} />
 							)
 						}
