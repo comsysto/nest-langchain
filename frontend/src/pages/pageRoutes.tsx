@@ -1,4 +1,4 @@
-import { PromptingTemplate } from '../components/PromptingTemplate'
+import { PromptingTemplate } from '../components'
 
 export type RouteType = {
     name: string,

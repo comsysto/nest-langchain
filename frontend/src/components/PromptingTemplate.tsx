@@ -3,7 +3,7 @@ import {ChatIcon} from '@chakra-ui/icons'
 import { useState } from "react";
 import { api } from "../api/apiService";
 
-import { CodeHighlight } from "../components/CodeHighlight";
+import { CodeHighlight } from "../components";
 
 
 

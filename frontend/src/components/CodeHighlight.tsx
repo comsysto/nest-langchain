@@ -1,13 +1,24 @@
 import { Code, CodeProps } from "@chakra-ui/react";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialOceanic  } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { isValidJSON } from "../util";
 
 export type CodeHighlightProps = {
 	text: string
 } & CodeProps                                          
 
+
+
 export function CodeHighlight(props: CodeHighlightProps){
+
+    const isValidJSON = (str : string) : boolean => {
+        try {
+            JSON.parse(str)
+            return true
+        } catch (_) {}
+    
+        return false
+    }
+
     const parseText = (text : string) => {
 
         const codeBlockPattern = /```(\w+)?\n([\s\S]*?)```/g;
