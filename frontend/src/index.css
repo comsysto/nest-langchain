@@ -1,0 +1,8 @@
+* {
+  text-decoration: none;
+  overflow-x: hidden;
+}
+
+a:focus {
+  outline: none;
+}
