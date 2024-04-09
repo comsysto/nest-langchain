@@ -1,9 +1,9 @@
-import { Button, Code, Divider, Heading, SkeletonText, Stack, Text, Textarea } from "@chakra-ui/react";
+import { Button, Code, Divider, Heading, SkeletonText, Stack, Text, Textarea, useToast } from "@chakra-ui/react";
 import {ChatIcon} from '@chakra-ui/icons'
 import { useState } from "react";
 import { api } from "../api/apiService";
 
-import { CodeHighlight } from "../components/CodeHighlight";
+import { CodeHighlight } from "../components";
 
 
 
@@ -12,15 +12,17 @@ export type PromptingTemplateProps = {
     heading: string,
     description: string,
     textAreaPlaceholder: string,
-    key: string,
+    k: string,
 
 }
 
-export function PromptingTemplate({apiPath, heading, description, textAreaPlaceholder, key} : PromptingTemplateProps) {
+export function PromptingTemplate({apiPath, heading, description, textAreaPlaceholder, k} : PromptingTemplateProps) {
 
     const [response, setResponse] = useState('')
     const [fetching, setFetching] = useState(false)
     const [prompt, setPrompt] = useState('')
+
+    const toast = useToast()
 
     const handleChange = (e : React.ChangeEvent<HTMLTextAreaElement>) => {
         setPrompt(e.target.value)
@@ -30,21 +32,30 @@ export function PromptingTemplate({apiPath, heading, description, textAreaPlaceh
         setFetching(true)
         const [res, err] = await api.fetch(`${apiPath(prompt)}`)
 
+        setFetching(false)
         if(err){
             // ...
+            toast({
+                title: 'Failed to fetch',
+                description: "Check the console for more information",
+                status: 'error',
+                duration: 6000,
+                isClosable: true,
+            })
+            console.error(err)
+            return
         }
 
-        setFetching(false)
         setResponse(res as string)
     }
 
-    return <>
+    return <div key={k}>
         <Stack spacing={3}>
             <Heading overflow={'hidden'} size={'lg'}>{heading}</Heading>
             <Text>{description}</Text>
         </Stack>
 
-        <Stack key={key} direction={'row'} justifyContent={"center"} padding={5}>
+        <Stack direction={'row'} justifyContent={"center"} padding={5}>
             <Stack padding={1} width={'40%'} minWidth={'200px'} maxWidth={'1200px'} >
                 <Textarea minHeight='120px' placeholder={textAreaPlaceholder} size="lg" resize={'none'} onChange={handleChange} />
                 <Stack justifyContent={'flex-end'} direction={'row'}>
@@ -72,5 +83,5 @@ export function PromptingTemplate({apiPath, heading, description, textAreaPlaceh
             </Stack>
         </Stack>
 
-    </>
+    </div>
 }
