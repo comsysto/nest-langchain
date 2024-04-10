@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "postinstall": "cd ./frondend && npm install",
+    "postinstall": "cd ./frontend && npm install",
     "start:all": "concurrently \"chroma run --path ./chromadb\" \"npm run start:dev\" \"cd ./frontend && npm run dev\"",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
