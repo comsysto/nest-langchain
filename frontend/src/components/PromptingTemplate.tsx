@@ -10,19 +10,12 @@ export type PromptingTemplateProps = {
   heading: string;
   description: string;
   textAreaPlaceholder: string;
-  k: string;
 };
 
-export function PromptingTemplate({ apiPath, heading, description, textAreaPlaceholder, k }: PromptingTemplateProps) {
+export function PromptingTemplate({ apiPath, heading, description, textAreaPlaceholder }: PromptingTemplateProps) {
   const [response, setResponse] = useState("");
   const [fetching, setFetching] = useState(false);
   const [prompt, setPrompt] = useState("");
-
-  useEffect(() => {
-    setResponse("");
-    setFetching(false);
-    setPrompt("");
-  }, [k]);
 
   const toast = useToast();
 
@@ -51,7 +44,7 @@ export function PromptingTemplate({ apiPath, heading, description, textAreaPlace
   };
 
   return (
-    <div key={k}>
+    <div>
       <Stack spacing={3}>
         <Heading overflow={"hidden"} size={"lg"}>
           {heading}
@@ -83,7 +76,7 @@ export function PromptingTemplate({ apiPath, heading, description, textAreaPlace
               <SkeletonText mt="0" noOfLines={4} spacing="4" skeletonHeight="3" />
             </Code>
           ) : response ? (
-            <CodeHighlight key={`code-${k}`} text={response} padding={3} whiteSpace={"pre-wrap"} textAlign={"left"} />
+            <CodeHighlight text={response} padding={3} whiteSpace={"pre-wrap"} textAlign={"left"} />
           ) : (
             <></>
           )}

@@ -1,4 +1,4 @@
-const endpoint = "http://localhost:3000";
+const baseUrl = "http://localhost:3000";
 
 class ApiService {
   /**
@@ -10,7 +10,7 @@ class ApiService {
    */
   async fetch(path: string, options?: RequestInit): Promise<[string | null, Error | string | null]> {
     try {
-      const response = await fetch(endpoint + path, options);
+      const response = await fetch(baseUrl + path, options);
 
       if (!response.ok) {
         return [null, new Error(`HTTP error! Status: ${response.status}`)];
