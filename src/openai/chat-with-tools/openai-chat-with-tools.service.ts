@@ -27,13 +27,14 @@ export class OpenAIChatWithToolsService {
   private prompt = ChatPromptTemplate.fromMessages([
     [
       "system",
-      `The by the user provided text contains a possibly incorrectly formatted address. It should include a streetAddress, houseNumber, city and a zipCode.
+      `The by the user provided text contains a possibly incorrectly formatted address. 
+      It should include a streetAddress, houseNumber, city and a zipCode.
       Return the address in the format: streetAddress houseNumber, zipCode city.
       
       If the zipCode is missing, retrieve it and add it to the result. 
       If any other field is missing, omit it in the response.
 
-      Return only the formatted address no addtional explanation or text.
+      Return only the formatted address no additional explanation or text.
 
       EXAMPLES:
       - "Riesstraße 22 München" -> "Riesstraße 22, 80992 München"
@@ -41,18 +42,19 @@ export class OpenAIChatWithToolsService {
       `,
     ],
     ["user", "{inputAddress}"],
-    // this placeholder is needed for the agent to store intermediate information over multiple requests to OpneAI
+    // this placeholder is needed for the agent to store intermediate information over multiple requests to OpenAI
     new MessagesPlaceholder("agent_scratchpad"),
   ]);
 
   private zipCodeTool = new DynamicStructuredTool({
     name: "get-zip-code",
-    description: "Retrieve the zip code from the city and street name",
+    description: "Retrieve the zip code for the city and street name",
     schema: z.object({
       city: z.string().describe("The city name."),
       streetName: z.string().describe(`
         The name of the street.
-        It is important that street names which include the word "Straße" or "Strasse" case insensitive are replaced it with "Str." or "str.".
+        It is important that street names which include the word "Straße" or "Strasse" 
+        case insensitive are replaced it with "Str." or "str.".
 
         examples:
         - "Riesstraße" -> "Riesstr."

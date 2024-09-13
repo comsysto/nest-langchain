@@ -41,7 +41,7 @@ export class ChatWithSemanticSearchService {
       `,
     ],
     ["user", "{userQuery}"],
-    // this placeholder is needed for the agent to store intermediate information over multiple requests to OpneAI
+    // this placeholder is needed for the agent to store intermediate information over multiple requests to OpenAI
     new MessagesPlaceholder("agent_scratchpad"),
   ]);
 

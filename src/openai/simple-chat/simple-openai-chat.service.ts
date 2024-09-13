@@ -12,7 +12,8 @@ export class SimpleOpenAIChatService {
   }
 
   private stringOutputParser = new StringOutputParser();
-  private templatePrompt = HandlebarsPromptTemplate.fromTemplate(
+
+  private promptTemplate = HandlebarsPromptTemplate.fromTemplate(
     `After INPUT you will receive a possibly incorrectly formatted address. 
       It should include a street, houseNumber, city and a zipCode.
       Return the address as json in the format:
@@ -35,15 +36,15 @@ export class SimpleOpenAIChatService {
   
       If any field is missing, set the value to null.
 
-      Return only the json no addtional explanation, text or formatting.
+      Return only the json no additional explanation, text or formatting.
 
       INPUT
       {{inputAddress}}`,
   );
 
   async chatWithTemplate(address: string): Promise<string> {
-    const llmChain = this.templatePrompt.pipe(this.openAI).pipe(this.stringOutputParser);
+    const llmChain = this.promptTemplate.pipe(this.openAI).pipe(this.stringOutputParser);
 
-    return await llmChain.invoke({ inputAddress: address });
+    return llmChain.invoke({ inputAddress: address });
   }
 }
